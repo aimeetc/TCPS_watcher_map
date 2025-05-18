@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Watcher Map — NZ Native Territories + Top 100 Sites</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height: 100vh; width: 100vw; margin: 0; padding: 0; }
+    html, body { margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([-41.2865, 174.7762], 6);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const nativeTerritoriesLayer = L.tileLayer.wms('https://native-land.ca/api/index.php', {
+      layers: 'territories',
+      format: 'image/png',
+      transparent: true,
+      attribution: '© Native-Land.ca'
+    });
+    nativeTerritoriesLayer.addTo(map);
+
+    const sites = [
+      { name: "Te Awa Kairangi / Hutt River", lat: -41.233333, lng: 174.899997, url: "https://thecarpark.org/posts/hutt-river" },
+      { name: "Pureora Forest", lat: -38.694688, lng: 175.561210, url: "https://thecarpark.org/posts/pureora-forest" },
+      { name: "Bastion Point / Takaparawhau", lat: -36.8464, lng: 174.8242, url: "https://thecarpark.org/posts/bastion-point" },
+      { name: "Waiwhetū Stream / Lower Hutt", lat: -41.226000, lng: 174.906000, url: "https://thecarpark.org/posts/waiwhetu" },
+      // ... continue up to 100
+    ];
+
+    sites.forEach(site => {
+      const marker = L.marker([site.lat, site.lng]).addTo(map);
+      marker.bindPopup(`<strong>${site.name}</strong><br><a href="${site.url}" target="_blank">Read Blog Post</a>`);
+    });
+  </script>
+</body>
+</html>
